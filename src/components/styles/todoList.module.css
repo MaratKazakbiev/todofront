@@ -1,0 +1,14 @@
+.container{
+
+    margin: 30px 90px auto;
+    height: 560px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+}
+
+.todos{
+    
+    height: 530px;    
+    overflow-y: scroll;
+}
+

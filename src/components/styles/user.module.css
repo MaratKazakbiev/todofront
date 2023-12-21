@@ -1,0 +1,32 @@
+.container{
+
+    width: 960px;
+    margin-bottom: 15px;
+    min-height: 85px;
+    border-radius: 15px ;
+    box-shadow: 5px 5px 6px grey;
+    user-select: none;
+}
+
+.user{
+
+    width: 930px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: rgba(189, 207, 194, 1);
+    word-break: break-all;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+
+.link{
+
+    color: black;
+    text-decoration: none;
+}
+
+.link:hover{
+
+    text-decoration: underline;
+}

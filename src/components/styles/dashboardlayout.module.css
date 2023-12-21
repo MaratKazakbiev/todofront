@@ -1,0 +1,8 @@
+.container{
+
+    margin: auto;
+    background: rgba(255, 251, 251, 0.85);
+    width: 1152px;
+    min-height: 700px;
+    border-radius: 10px;
+}
