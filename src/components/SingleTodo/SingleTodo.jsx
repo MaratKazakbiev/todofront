@@ -3,7 +3,7 @@ import { Link, json, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import style from '../styles/singleTodo.module.css';
+import style from './singleTodo.module.css';
 
 
 const SingleTodo = () => {

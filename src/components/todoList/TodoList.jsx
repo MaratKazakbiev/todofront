@@ -1,87 +1,81 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
-import style from '../styles/todoList.module.css'
-import Todo from './Todo'
+import style from './todoList.module.css'
+import Todo from '../Todo/Todo.jsx'
 import Loader from '../../assets/loader/Loader.jsx'
 
 
-const TodoList = ({todos , users}) => {
+const TodoList = () => {
 
+  const [todos , setTodos] = useState([]);
+  const [isLoading , setisLoading] = useState(false);
+  const [error , setError] = useState('');
+  
   const [search , setSearch] = useState('');
   const [filteredTodos, setFilteredTodos]= useState([...todos]);
+  const [selectedSort, setSelectedSort] = useState(null);
+
+
+  const fetchTodos = () =>{
+    setisLoading(true);
+    axios
+      .get('https://jsonplaceholder.typicode.com/todos')
+      .then((res) =>{
+        setTodos(res.data) 
+        setFilteredTodos(res.data)
+        setisLoading(false);
+      }) 
+      .catch((error)=>setError(error))
+  }
+
+  useEffect(()=>{
+    fetchTodos();
+  },[]);
+
+  useEffect(()=>{
+    if (Number(selectedSort == 1)){
+      sortHandler();
+    } else if (Number(selectedSort == 2)){
+      reverseSortHandler();
+    }
+  },[selectedSort])
 
   const sortHandler = () => {
-    if (filteredTodos.length > 1) {
-      const sorted = filteredTodos.sort(function (a, b) {
-        if (a.title < b.title) return -1;
-        if (a.title > b.title) return 1;
-        return 0;
-      });
-      setFilteredTodos([...sorted]);
-    }
+    setFilteredTodos(prevState => prevState.sort((a,b)=> b.title.localeCompare(a.title)))
   };
 
   const reverseSortHandler = () => {
-    if (filteredTodos.length > 1) {
-      const sorted = filteredTodos.sort(function (a, b) {
-        if (a.title < b.title) return 1;
-        if (a.title > b.title) return -1;
-        return 0;
-      });
-      setFilteredTodos([...sorted]);
-
-    }
+    setFilteredTodos(prevState => prevState.sort((a,b)=> a.title.localeCompare(b.title)))
   };
-
-  const sortSwitcher = () =>{
-    let selectBox = document.getElementById("selectBox");
-    let value = selectBox.options[selectBox.selectedIndex].value;
-    
-    if (value == 1){
-      sortHandler();
-    }
-    
-    if (value == 2){
-      reverseSortHandler();
-    }
-    
-  }
-
-  const searchHandler = (e) => {
-    setSearch(e.target.value);
-
-    if (search.length > 0)
-    {
-
-      setFilteredTodos(filteredTodos => filteredTodos.filter((todo) => todo.title.toLowerCase().includes(search)))
-
-    }
-    else if (search.length == 0){
-      
-      setFilteredTodos([...todos]);
-    }
-  };
-
 
   return (
 
     <div  className={style.container}>
 
       <div>
-        <input value={search} placeholder='Search' onChange={searchHandler}></input>
+        <input 
+          value={search} 
+          placeholder='Search' 
+          onChange={(e)=>setSearch(e.target.value)}
+        />
 
-        <select id="selectBox" onChange={sortSwitcher}>
-          <option disabled selected value>Select sort</option>
+        <select id="selectBox" 
+        onChange={(e)=> setSelectedSort(e.target.value)}
+        defaultValue={'DEFAULT'}
+        >
+          <option disabled value='DEFAULT'>Select sort</option>
           <option value="1">From A to Z</option>
           <option value="2">From Z to A</option>
         </select>
       </div>
 
       <div className={style.todos}>
-        {todos.length == 0 && <Loader style={{margin:'auto'}}/>}
-
-        {filteredTodos.map((todo) => <Todo key={todo.id} {...todo} />)}
+        {isLoading && <Loader style={{margin:'auto'}}/>}
+        {error && <div>{error}</div>}
+        {filteredTodos
+        .filter((t)=>t.title.toLowerCase().includes(search.toLowerCase()))
+        .map((todo) => <Todo key={todo.id} {...todo} />)}
       </div>
     </div>
 

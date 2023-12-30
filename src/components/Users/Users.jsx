@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import React from 'react'
-import style from './styles/users.module.css'
-import Loader from '../assets/loader/Loader.jsx'
-import User from './User.jsx';
+import style from './users.module.css'
+import Loader from '../../assets/loader/Loader.jsx'
+import User from '../User/User.jsx';
 
 
 
@@ -27,7 +27,6 @@ const Users = () => {
   return (
       <div className={style.container}>
         {loader && <Loader />}
-        {console.log(users)}
       
       <div className={style.users}>
         {users.map((user)=> <User key={user.id} {...user}/>)}

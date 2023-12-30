@@ -1,5 +1,5 @@
 import React from 'react'
-import style from './styles/user.module.css'
+import style from './user.module.css'
 import { Link, json } from 'react-router-dom';
 
 
